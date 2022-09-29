@@ -1,30 +1,36 @@
-import { User, Eye } from 'phosphor-react';
+import { User, Eye, Warning } from 'phosphor-react';
 import '../styles/main.css';
 
-import { Link, Routes } from 'react-router-dom';
+import { Link, Routes, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import RoutesApp from '../routes';
+import Cookies from 'cookies';
 
 function Login() {
+
+    const navigate = useNavigate();
 
     async function handleLogin(event: FormEvent) {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
         const data = Object.fromEntries(formData);
-        console.log(data)
+        //console.log(data)
 
         try {
             await axios.post('http://localhost:1111/login', {
                 username: data.username, 
                 password: data.password, 
-            }).then(response => {console.log(response.data)})
+            }).then(response => {
+                navigate("/main_page");
+                
+                console.log(response)
+            })
         } catch(err) {
             console.log(err);
         }
     }
-
 
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_login bg-cover bg-no-repeat shadow-left'>
