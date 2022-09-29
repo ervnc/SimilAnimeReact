@@ -6,11 +6,11 @@ import User_Registration from "../pages/User_Registration";
 import Main_page from '../pages/Main_page';
 import Auth from '../pages/Auth';
 
-const Private = ({ Item }) => {
-    const signed = true;
+// const Private = ({ Item }) => {
+//     const signed = true;
 
-    return signed ? <Item /> : <Login />;
-}
+//     return signed ? <Item /> : <Login />;
+// }
 
 const RoutesApp = () => {
    return(
@@ -20,7 +20,7 @@ const RoutesApp = () => {
                 <Routes>
                     <Route element = { <User_Registration /> } path="/user_registration" />
                     <Route element = { <Login /> } path="/" />
-                    <Route path="/main_page" element = { <Private Item={Main_page} /> } />
+                    <Route path="/main_page" element = { <Main_page />} />
                     <Route path="/authenticate" element = { <Auth /> } />
                     <Route element = { <Login /> } path="*" />
                 </Routes>
