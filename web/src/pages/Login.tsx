@@ -1,14 +1,29 @@
-import { User, Eye, Warning } from 'phosphor-react';
+import { User, Eye, Warning, WindowsLogo } from 'phosphor-react';
 import '../styles/main.css';
 
 import { Link, Routes, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import RoutesApp from '../routes';
-import Cookies from 'cookies';
+
+import { Toast } from 'primereact/toast';
+import { Password } from 'primereact/password';
+import 'primeicons/primeicons.css';
+import { classNames } from 'primereact';
 
 function Login() {
+
+    const toast = useRef(null as any);
+
+    const showError = () => {
+        toast.current.show({ 
+            detail:'Username or password is invalid', 
+            life: 3000,
+            closable: false,
+            className: 'w-72 h-10 top-10 right-5 bg-[#e74c3c] text-white rounded p-3 fixed font-bold',
+            contentClassName: 'flex items-center h-full w-full'
+        });
+    }
 
     const navigate = useNavigate();
 
@@ -21,11 +36,22 @@ function Login() {
         try {
             await axios.post('http://localhost:1111/login', {
                 username: data.username, 
-                password: data.password, 
-            }).then(response => {
-                navigate("/main_page");
-                
-                console.log(response)
+                password: data.password,
+
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: data.username})
+ 
+            }).then(async response => {
+
+                const respostaJson = await response
+                if (respostaJson.data.auth == true) {
+                    localStorage.setItem("tokenUsuario", respostaJson.data.token);
+                    localStorage.setItem('username', respostaJson.data.user[0].username);
+                    console.log(respostaJson);
+                    navigate("/main_page");
+                } else {
+                    showError();
+                }
             })
         } catch(err) {
             console.log(err);
@@ -33,9 +59,11 @@ function Login() {
     }
 
     return (
-        <div className='mx-auto flex flex-col h-screen bg-background_login bg-cover bg-no-repeat shadow-left'>
+        <div className='mx-auto flex flex-col h-screen bg-background_login bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
 
-            <h1 className='text-7xl text-white font-bold mt-16 ml-40'>
+            <Toast ref={toast} />
+
+            <h1 className='text-7xl text-white font-bold mt-16 ml-40 font-comfortaa'>
                 Simil
                 <span className='text-[#1D90F4]'>Anime</span>
             </h1>
