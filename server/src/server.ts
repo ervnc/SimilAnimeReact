@@ -64,7 +64,7 @@ app.post('/login', async (request: any, response: any, next: any) => {
                 const id = username;
                 var privateKey = fs.readFileSync('./private.key', 'utf8');
                 var token : any = jwt.sign({ id }, privateKey, {
-                    expiresIn: 300, // 5min 
+                    expiresIn: 600, // 5min 
                     algorithm: "RS256"
                 });
                 console.log("Fez login e gerou token!");
@@ -174,11 +174,13 @@ app.get('/users/:username/characters', async (req: any, res: any) => {
 // ==========================================
 // Excluir personagem de determinado usuário
 // ==========================================
-app.delete('/users/:username/characters/:characters/delete', async (req: any, res: any) => {
-    const deleteCharacter = await prisma.characters.findFirst({
+app.post('/users/:username/characters/:characters/delete', async (req: any, res: any) => {
+    const deleteCharacter = await prisma.characters.delete({
         where: {
-            usersUsername: req.userId,
-            name: req.params.name,
+            name_usersUsername: {
+                name: req.params.characters,
+                usersUsername: req.params.username,
+            }
         }
     })
         

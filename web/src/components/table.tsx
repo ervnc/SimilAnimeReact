@@ -18,10 +18,6 @@ const TableCharacters = () => {
         { heading: 'Occupation', value: 'occupation' },
     ]
 
-
-
-
-
     let username = localStorage.getItem('username');
     useEffect(() => {
         axios.get(`http://localhost:1111/users/${username}/characters`)
@@ -29,30 +25,14 @@ const TableCharacters = () => {
             .catch(err => console.log(err));
     }, [])
 
-    const deleteCharacter = (del: any) => {
-        let delData = data.filter((val: any) => {
-            if (del !== val.name) {
-                axios.delete(`http://localhost:1111/users/${username}/characters/${del}/delete`).then((res) => {console.log(res)})
-            }
-            return del !== val.name
+    const deleteCharacter = (nameCharacter: string) => {
+        let delData = data.filter((characters: any) => {                
+            return nameCharacter !== characters.name
         });
+        axios.post(`http://localhost:1111/users/${username}/characters/${nameCharacter}/delete`)
+        setData(delData);
         console.log(delData);
     }
-
-    // useEffect(() => {
-    //     let teste = dataTable.map((val: any) => {
-            
-    //     })
-    // }, [])
-
-    // function deleteCharacter(elemento: any) {
-    //     console.log(elemento);
-    //     axios.post(`/users/${username}/characters//delete`)
-    //     .then((res) => {console.log("funcionou")})
-    //     .catch((err) => {console.log(err)});
-    // }
-
-    //console.log(data);
 
     const TableHeadItem = ({ item }: any) => <th>{item.heading}</th>
     // const TableRow = ({ item, column }: any) => (

@@ -266,9 +266,6 @@ function Character_registration() {
                     <Input id="occupation" name="occupation" placeholder="Occupation" autoComplete='off' type='text' />   
                 </div>
 
-
-
-
                 <button className='bg-[#17E9AA] w-36 rounded-2xl h-10 text-white font-bold mt-10 ml-[90px] justify-center'>Next</button>     
             </form>
 
