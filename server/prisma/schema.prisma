@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Users {
-  username    String       @id @unique
+  username    String       @id
   password    String
   name        String
   weight      Float
@@ -34,7 +34,7 @@ model Characters {
   blood_type    String
   gender        String
   sexuality     String
-  birthday      DateTime
+  birthday      String
   zodiac_sign   String
   mbti          String
   occupation    String

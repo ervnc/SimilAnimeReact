@@ -1,15 +1,13 @@
-import { User, Eye, Warning, WindowsLogo } from 'phosphor-react';
+import { User, Eye } from 'phosphor-react';
 import '../styles/main.css';
 
-import { Link, Routes, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useRef } from 'react';
 import axios from 'axios';
 
 import { Toast } from 'primereact/toast';
-import { Password } from 'primereact/password';
 import 'primeicons/primeicons.css';
-import { classNames } from 'primereact';
 
 function Login() {
 
@@ -31,7 +29,6 @@ function Login() {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
         const data = Object.fromEntries(formData);
-        //console.log(data)
 
         try {
             await axios.post('http://localhost:1111/login', {
@@ -76,14 +73,14 @@ function Login() {
 
             <hr className='w-32 ml-40 mt-7 border-[#1D90F4]' />
 
-            <form className='ml-48' onSubmit={handleLogin}>
+            <form className='ml-48' onSubmit={handleLogin} autoComplete="off">
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="username" name="username" placeholder="Username" autoComplete='off' type='text' required onChange={undefined}/>
+                    <Input id="username" name="username" placeholder="Username" type='text' required />
                     <User size={24} className='text-white absolute right-4'/>      
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="password" name="password" placeholder="Password" type='password' autoComplete='off' required onChange={undefined}/>
+                    <Input id="password" name="password" placeholder="Password" type='password' required/>
                     <Eye size={24} className='text-white absolute right-4'/>   
                 </div>      
 

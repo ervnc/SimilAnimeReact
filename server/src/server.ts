@@ -124,15 +124,17 @@ app.post('/user_registration', async  (req: any, res: any) => {
     })
 });
 
-
-//rota de logout
+// ===============
+// Rota de logout
+// ===============
 app.post('/logout', function (req: any, res: any) {
     console.log("Fez logout e cancelou o token!");
     res.status(200).send({ auth: false, token: null });
 });
 
-
+// ==============================================
 // Adicionar personagem para determinado usuário
+// ==============================================
 app.post('/users/:username/characters', async (req: any, res: any) => {
     const id = req.params.username;
     const body = req.body;

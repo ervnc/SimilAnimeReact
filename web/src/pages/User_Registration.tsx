@@ -11,9 +11,10 @@ import { InputNumber } from 'primereact/inputnumber';
 
 function User_Registration() {
 
-    const [value3, setValue3] = useState('');
-    const [value, setValue] = useState('');
-    const [value1, setValue1] = useState('');
+    const [passwordVerify, setPasswordVerify] = useState('');
+    const [weightVerify, setWeightVerify] = useState(null);
+    const [heightVerify, setHeightVerify] = useState(null);
+    const [dateVerify, setDateVerify] = useState('');
     const navigate = useNavigate();
 
     async function handleCreateUser(event: FormEvent) {
@@ -42,6 +43,13 @@ function User_Registration() {
             alert('ERRO');
         }
     }
+
+
+    // const [imageUploaded, setImageUploaded] = useState();
+
+    // const handleChange = (event: any) => {
+    //     setImageUploaded(event.target.files[0]);
+    // };
 
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_user_registration bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
@@ -75,25 +83,32 @@ function User_Registration() {
                 look like.
             </h5>
 
-            <form className='ml-48' onSubmit={handleCreateUser}>
+            <form className='ml-48' onSubmit={handleCreateUser} autoComplete='off'>
+
+
+                {/* <Input
+                    onChange={handleChange}
+                    accept=".jpg, .png, .gif, .jpeg"
+                    type="file"
+                ></Input> */}
+
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="username" name="username" placeholder="Username" autoComplete='off' type='text' required />   
+                    <Input id="username" name="username" placeholder="Username" type='text' required />   
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="name" name="name" placeholder="Name" autoComplete='off' type='text' required />   
+                    <Input id="name" name="name" placeholder="Name" type='text' required />   
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
-                    {/* <Input id="password" name="password" placeholder="Password" type="password" required /> */}
                     <Password 
-                        value={value3} 
+                        value={passwordVerify} 
                         inputClassName="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
                         className='w-full'
                         placeholder='Password'
                         id="password" 
                         name="password" 
-                        onChange={(e) => setValue3(e.target.value)} 
+                        onChange={(e) => setPasswordVerify(e.target.value)} 
                         panelClassName="w-24 h-14 absolute mt-2 rounded bg-color_input text-white p-4"
                         toggleMask
                         required
@@ -106,12 +121,11 @@ function User_Registration() {
                         name="weight"
                         placeholder="Weight" 
                         inputId="currency-us" 
-                        value={value1} 
-                        onValueChange={(e) => setValue1(e.value1)} 
+                        value={weightVerify} 
+                        onValueChange={(e) => setWeightVerify(e.value)} 
                         mode="decimal" 
                         locale="en-US" 
                         minFractionDigits={2} 
-                        autoComplete='off' 
                         className='w-full'
                         inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
                         />
@@ -123,20 +137,15 @@ function User_Registration() {
                         name="height" 
                         placeholder="Height" 
                         inputId="currency-us" 
-                        value={value1} 
-                        onValueChange={(e) => setValue1(e.value1)} 
+                        value={heightVerify} 
+                        onValueChange={(e) => setHeightVerify(e.value)} 
                         mode="decimal" 
                         locale="en-US" 
-                        minFractionDigits={2} 
-                        autoComplete='off' 
+                        minFractionDigits={2}  
                         className='w-full'
                         inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
                         />
                 </div>
-
-                {/* <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="blood_type" name="blood_type" placeholder="Blood type" autoComplete='off' type='text' required />   
-                </div> */}
 
                 <div className='flex items-center relative w-80 mt-10'>
                     <select name="blood_type" id="blood_type" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
@@ -174,10 +183,10 @@ function User_Registration() {
                         id="birth_date" 
                         name="birth_date" 
                         placeholder="Birth date" 
-                        value={value} 
-                        onChange={(e) => setValue(e.value)}
+                        value={dateVerify} 
+                        onChange={(e) => setDateVerify(e.value)}
                         className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
-                        autoComplete='off'>
+                    >
                     </InputMask>                    
                 </div>
 
@@ -221,7 +230,7 @@ function User_Registration() {
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="occupation" name="occupation" placeholder="Occupation" autoComplete='off' type='text' />   
+                    <Input id="occupation" name="occupation" placeholder="Occupation" type='text' />   
                 </div>
                 
 

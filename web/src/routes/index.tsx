@@ -4,14 +4,8 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Login from '../pages/Login';
 import User_Registration from "../pages/User_Registration";
 import Main_page from '../pages/Main_page';
-import Auth from '../pages/Auth';
 import Character_registration from '../pages/Character_registration';
-
-// const Private = ({ Item }) => {
-//     const signed = true;
-
-//     return signed ? <Item /> : <Login />;
-// }
+import User_Edit from '../pages/User_Edit';
 
 const RoutesApp = () => {
    return(
@@ -20,6 +14,7 @@ const RoutesApp = () => {
             <Fragment>
                 <Routes>
                     <Route element = { <User_Registration /> } path="/user_registration" />
+                    <Route element = { <User_Edit /> } path="/user_edit" />
                     <Route element = { <Character_registration /> } path="/character_registration" />
                     <Route element = { <Login /> } path="/" />
                     <Route path="/main_page" element = { <Main_page />} />

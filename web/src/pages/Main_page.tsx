@@ -102,11 +102,12 @@ function Main_page() {
                 <hr className='w-40 border-[#CB77FF] ml-[50%] translate-x-[-50%] rotate-90' />
             </div>
 
+            <Link to="/character_registration" className="w-40 h-10 mb-16">
+                <Button label="Register character" className="bg-[#CB77FF] w-full rounded-2xl h-full text-white font-bold mt-10 ml-[90px] justify-center" />
+            </Link>
+
             <TableCharacters />
 
-            <Link to="/character_registration">
-                <Button label="Secondary" className="p-button-secondary" />
-            </Link>
         </div>
     )
 }
