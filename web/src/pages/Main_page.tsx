@@ -26,6 +26,8 @@ function Main_page() {
         })
     }, [])
 
+    
+
     return(
         <div className='mx-auto flex flex-col h-screen bg-[#272323] font-quicksand font-normal overflow-x-hidden'>
 

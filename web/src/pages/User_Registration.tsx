@@ -1,6 +1,4 @@
 import '../styles/main.css';
-import { Popover } from '@headlessui/react'
-import imgLogo from '../assets/logo_similanime.svg';
 import Input from '../components/Input';
 import { FormEvent, useState } from 'react';
 import axios from 'axios';
@@ -8,13 +6,22 @@ import { Password } from 'primereact/password';
 import { useNavigate } from 'react-router-dom';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
+import { InputText } from 'primereact/inputtext';
+import "../components/css/input_number.css";
+import { Dropdown } from 'primereact/dropdown';
+import { Controller, useForm } from 'react-hook-form';
+import { Calendar } from 'primereact/calendar';
+import "../components/css/calendar.css";
 
 function User_Registration() {
 
-    const [passwordVerify, setPasswordVerify] = useState('');
+    const [valueUsername, setValueUsername] = useState('');
+    const [valueName, setValueName] = useState('');
+    const [valueOccupation, setValueOccupation] = useState('');
+    const [valuePassword, setValuePassword] = useState('');
     const [weightVerify, setWeightVerify] = useState(null);
     const [heightVerify, setHeightVerify] = useState(null);
-    const [dateVerify, setDateVerify] = useState('');
+    const [dateVerify, setDateVerify] = useState("");
     const navigate = useNavigate();
 
     async function handleCreateUser(event: FormEvent) {
@@ -44,107 +51,91 @@ function User_Registration() {
         }
     }
 
+    // const defaultValues = {
+    //     date: null,
+    // }
 
-    // const [imageUploaded, setImageUploaded] = useState();
-
-    // const handleChange = (event: any) => {
-    //     setImageUploaded(event.target.files[0]);
-    // };
+    // const { control } = useForm({ defaultValues });
 
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_user_registration bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
-
-            <Popover className="relative bg-[#222020] shadow-menu">
-                <div className="mx-auto px-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex justify-start">
-                            <a href="/">
-                                <img
-                                    className="h-16 w-auto mt-2"
-                                    src={imgLogo}
-                                    alt=""
-                                />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </Popover>
-
-            <h1 className='text-4xl text-white font-bold mt-12 ml-40 font-comfortaa'>
+            
+            <h1 className='text-4xl text-white font-bold mt-12 ml-40 font-comfortaa z-10'>
                 <span className='text-[#17E9AA]'>User </span>
                  Registration
             </h1>
 
-            <hr className='w-32 ml-40 mt-7 border-[#17E9AA]' />
 
-            <h5 className='max-w-[260px] text-white text-2xl mt-7 ml-40'>
+            <h5 className='max-w-[260px] text-white text-2xl mt-7 ml-40 z-10'>
                 The system that shows you
                 <span className='text-[#17E9AA]'> who you </span>
                 look like.
             </h5>
 
-            <form className='ml-48' onSubmit={handleCreateUser} autoComplete='off'>
+            <hr className='w-32 ml-40 mt-7 border-[#17E9AA]' />
 
+            <form className='ml-48 z-10' onSubmit={handleCreateUser} autoComplete='off'>
 
-                {/* <Input
-                    onChange={handleChange}
-                    accept=".jpg, .png, .gif, .jpeg"
-                    type="file"
-                ></Input> */}
-
+                {/* Input username */}
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="username" name="username" placeholder="Username" type='text' required />   
+                    <span className="p-float-label w-full">
+                        <InputText id="username" name="username" value={valueUsername} onChange={(e) => setValueUsername(e.target.value)} required/>
+                        <label htmlFor="username">Username</label>
+                    </span>
                 </div>
 
+                {/* Input name */}
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="name" name="name" placeholder="Name" type='text' required />   
+                    <span className="p-float-label w-full">
+                        <InputText id="name" name="name" value={valueName} onChange={(e) => setValueName(e.target.value)} required/>
+                        <label htmlFor="name">Name</label>
+                    </span>
                 </div>
-
+      
+                {/* Input password */}
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Password 
-                        value={passwordVerify} 
-                        inputClassName="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
-                        className='w-full'
-                        placeholder='Password'
-                        id="password" 
-                        name="password" 
-                        onChange={(e) => setPasswordVerify(e.target.value)} 
-                        panelClassName="w-24 h-14 absolute mt-2 rounded bg-color_input text-white p-4"
-                        toggleMask
-                        required
-                    />  
-                </div>      
+                    <span className='p-float-label w-full'>
+                        <Password className="w-full flex" id="password" name="password" value={valuePassword} onChange={(e) => setValuePassword(e.target.value)} toggleMask required/>
+                        <label htmlFor="password">Password</label>
+                    </span>
+                </div>
 
                 <div className='flex items-center relative w-80 mt-10'> 
-                    <InputNumber 
-                        id="weight" 
-                        name="weight"
-                        placeholder="Weight" 
-                        inputId="currency-us" 
-                        value={weightVerify} 
-                        onValueChange={(e) => setWeightVerify(e.value)} 
-                        mode="decimal" 
-                        locale="en-US" 
-                        minFractionDigits={2} 
-                        className='w-full'
-                        inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
-                        />
+                    <span className='p-float-label w-full'>
+                        <InputNumber 
+                            id="weight" 
+                            name="weight"
+                            inputId="currency-us" 
+                            value={weightVerify} 
+                            onValueChange={(e) => setWeightVerify(e.value)} 
+                            mode="decimal" 
+                            locale="en-US" 
+                            minFractionDigits={1} 
+                            className='w-full inputNumber'
+                            showButtons={true}
+                            inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
+                            />
+                        <label htmlFor="weight">Weight</label>
+                    </span>
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
-                    <InputNumber 
-                        id="height" 
-                        name="height" 
-                        placeholder="Height" 
-                        inputId="currency-us" 
-                        value={heightVerify} 
-                        onValueChange={(e) => setHeightVerify(e.value)} 
-                        mode="decimal" 
-                        locale="en-US" 
-                        minFractionDigits={2}  
-                        className='w-full'
-                        inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
-                        />
+                    <span className='p-float-label w-full'>
+                        <InputNumber 
+                            id="height" 
+                            name="height" 
+                            inputId="currency-us" 
+                            value={heightVerify} 
+                            onValueChange={(e) => setHeightVerify(e.value)} 
+                            mode="decimal" 
+                            locale="en-US" 
+                            minFractionDigits={1}  
+                            className='w-full inputNumber'
+                            showButtons={true}
+                            inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
+                            />
+                        <label htmlFor="height">Height</label>
+                    </span>
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
@@ -177,17 +168,25 @@ function User_Registration() {
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'> 
-                    <InputMask 
-                        mask="99/99/9999" 
-                        slotChar="mm/dd/yyyy" 
-                        id="birth_date" 
-                        name="birth_date" 
-                        placeholder="Birth date" 
-                        value={dateVerify} 
-                        onChange={(e) => setDateVerify(e.value)}
-                        className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
-                    >
-                    </InputMask>                    
+                    <span className='p-float-label w-full'>
+                        <InputMask 
+                            mask="99/99" 
+                            slotChar="mm/dd" 
+                            id="birth_date" 
+                            name="birth_date" 
+                            value={dateVerify} 
+                            onChange={(e) => setDateVerify(e.value)}
+                            className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
+                        >
+                        </InputMask>
+                        <label htmlFor="birth_date">Birth date</label>
+                    </span>
+                    {/* <span className="p-float-label w-full">
+                        <Controller name="date" control={control} render={({ field }) => (
+                            <Calendar className="inputDate" id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} dateFormat="dd/mm" mask="99/99" showIcon />
+                        )} />
+                        <label htmlFor="date">Birthday</label>
+                    </span>            */}
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'> 
@@ -230,12 +229,39 @@ function User_Registration() {
                 </div>
 
                 <div className='flex items-center relative w-80 mt-10'>
-                    <Input id="occupation" name="occupation" placeholder="Occupation" type='text' />   
+                    <span className="p-float-label w-full">
+                        <InputText id="occupation" name="occupation" value={valueOccupation} onChange={(e) => setValueOccupation(e.target.value)} required/>
+                        <label htmlFor="occupation">Occupation</label>
+                    </span>  
                 </div>
                 
 
-                <button className='bg-[#17E9AA] w-36 rounded-2xl h-10 text-white font-bold mt-10 ml-[90px] justify-center'>Next</button>     
+                <button className='bg-[#17E9AA] hover:bg-[#17e9aacb] w-36 rounded-2xl h-10 text-white font-bold mt-10 mb-10 ml-[90px] justify-center'>Next</button>     
             </form>
+
+            
+            <div className='absolute top-[-100px] left-[-5px]'>
+                <svg width="118" height="363" viewBox="0 0 118 363" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path 
+                        d="M1.91803 362C1.91803 354.437 0 347.063 0 339.467C0 331.869 0 324.271 0 316.673C0 308.963 3.17113 301.858 6.18033 294.296C8.85007 287.588 9.89535 280.825 12.4672 274.11C18.308 258.862 32.1362 245.226 42.0902 230.609C55.5256 210.879 70.0082 190.842 70.0082 169.764C70.0082 136.967 52.9934 104.811 55.8361 71.9377C58.1475 45.2074 85.0084 21.88 117 1" 
+                        stroke="#454754" 
+                        stroke-linecap="round" 
+                        className='animate-loop'
+                        stroke-dasharray="8 8"/>
+                </svg>  
+            </div>
+
+            <div className='absolute bottom-0 left-[-5px]'>
+                <svg width="249" height="439" viewBox="0 0 249 439" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path 
+                        d="M243.934 439C243.934 429.824 248 420.877 248 411.661C248 402.442 248 393.223 248 384.005C248 374.65 241.278 366.029 234.9 356.855C229.241 348.716 227.025 340.51 221.574 332.364C209.193 313.863 179.882 297.319 158.783 279.583C130.305 255.645 99.6066 231.334 99.6066 205.761C99.6066 165.968 135.672 126.954 129.647 87.0685C124.747 54.6367 67.8113 26.3336 1.82635e-06 1" 
+                        stroke="#454754" 
+                        stroke-linecap="round" 
+                        className='animate-loop z-0'
+                        stroke-dasharray="8 8"/>
+                </svg>
+            </div>
+
 
         </div>
   )

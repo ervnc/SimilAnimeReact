@@ -211,11 +211,11 @@ function Character_registration() {
 
                 <div className='flex items-center relative w-80 mt-10'> 
                     <InputMask 
-                        mask="99/99/9999" 
-                        slotChar="mm/dd/yyyy" 
+                        mask="99/99" 
+                        slotChar="mm/dd" 
                         id="birthday" 
                         name="birthday" 
-                        placeholder="Birth date" 
+                        placeholder="Birthday" 
                         value={dateVerify} 
                         onChange={(e) => setDateVerify(e.value)}
                         className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
