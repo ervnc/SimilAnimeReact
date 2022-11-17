@@ -100,21 +100,32 @@
     width: 100%;
 }
 
-.p-button.p-button-icon-only {
+.inputNumber .p-button.p-button-icon-only {
     width: 2rem;
+}
+
+.inputNumber .p-button {
+    background: #17E9AA;
+    color: #fff;
     border-radius: 0.75rem;
 }
 
-.p-button {
-    background: #17E9AA;
-    color: #fff;
-}
-
-.p-button.p-button-icon-only:hover {
+.inputNumber .p-button.p-button-icon-only:hover {
     color: #fff;
     background: #17e9aacb;
 }
 
-.inputNumber .pi {
-    height: 0;
+.inputNumberCharacter .p-button.p-button-icon-only {
+    width: 2rem;
+}
+
+.inputNumberCharacter .p-button {
+    background: #FFA800;
+    color: #fff;
+    border-radius: 0.75rem;
+}
+
+.inputNumberCharacter .p-button.p-button-icon-only:hover {
+    color: #fff;
+    background: #ffaa00c4;
 }

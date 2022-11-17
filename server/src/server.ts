@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";    
+import { Prisma, PrismaClient } from "@prisma/client";    
 import cors from 'cors';
 import { Request, Response, NextFunction } from 'express';
 
@@ -119,6 +119,14 @@ app.post('/user_registration', async  (req: any, res: any) => {
                 mbti: body.mbti,
                 occupation: body.occupation,
             }
+        }).catch(e => {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                if (e.code === 'P2002') {
+                    console.log(
+                        'There is a unique constraint violation, a new user cannot be created with this email'
+                      )
+                }
+            }
         })
         return res.json(user);
     })
@@ -139,6 +147,8 @@ app.post('/users/:username/characters', async (req: any, res: any) => {
     const id = req.params.username;
     const body = req.body;
 
+
+
     const character = await prisma.characters.create({
         data: {
             usersUsername: id,
@@ -152,11 +162,20 @@ app.post('/users/:username/characters', async (req: any, res: any) => {
             zodiac_sign: body.zodiac_sign,
             mbti: body.mbti,
             occupation: body.occupation,
+            similarity: body.similarity,
+        }
+    }).catch(e => {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === 'P2002') {
+                console.log(
+                    'There is a unique constraint violation, a new user cannot be created with this email'
+                  )
+            }
         }
     })
 
     return res.json(character);
-}) 
+})
 
 // ===========================================
 // Listar personagens de determinado usuário
@@ -185,6 +204,20 @@ app.post('/users/:username/characters/:characters/delete', async (req: any, res:
     })
         
     return res.status(200).json({deleteCharacter: deleteCharacter});
+})
+
+app.get('/users/:username/characters/order', async (req: any, res: any) => {
+    let username = req.params.username;
+    const characters = await prisma.characters.findMany({
+        where: {
+            usersUsername: username,
+        },
+        orderBy: {
+            similarity: 'desc',
+        },
+        take: 3,
+    })
+    return res.status(200).json({order: characters})
 })
 
 

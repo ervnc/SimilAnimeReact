@@ -1,0 +1,23 @@
+.buttonTable .p-button.p-button-danger {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.buttonTable .p-button.p-button-danger.p-button-icon-only:hover {
+    color: #fff;
+    background: #e74d3ccf;
+}
+
+.buttonTable .p-button-icon-only .p-button-label {
+    display: none;
+}
+
+.buttonTable .p-button.p-button-warning {
+    background: #F59E0B;
+    color: #fff;
+}
+
+.buttonTable .p-button.p-button-warning.p-button-icon-only:hover {
+    background: #f59f0bd3;
+    color: #fff;
+}

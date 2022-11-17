@@ -1,5 +1,4 @@
 import '../styles/main.css';
-import Input from '../components/Input';
 import { FormEvent, useState } from 'react';
 import axios from 'axios';
 import { Password } from 'primereact/password';
@@ -7,11 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import "../components/css/input_number.css";
-import { Dropdown } from 'primereact/dropdown';
-import { Controller, useForm } from 'react-hook-form';
-import { Calendar } from 'primereact/calendar';
-import "../components/css/calendar.css";
+import '../components/css/input_number.css';
 
 function User_Registration() {
 
@@ -50,12 +45,6 @@ function User_Registration() {
             alert('ERRO');
         }
     }
-
-    // const defaultValues = {
-    //     date: null,
-    // }
-
-    // const { control } = useForm({ defaultValues });
 
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_user_registration bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
@@ -100,6 +89,7 @@ function User_Registration() {
                     </span>
                 </div>
 
+                {/* Input weight */}
                 <div className='flex items-center relative w-80 mt-10'> 
                     <span className='p-float-label w-full'>
                         <InputNumber 
@@ -119,6 +109,7 @@ function User_Registration() {
                     </span>
                 </div>
 
+                {/* Input height */}
                 <div className='flex items-center relative w-80 mt-10'>
                     <span className='p-float-label w-full'>
                         <InputNumber 
@@ -138,6 +129,7 @@ function User_Registration() {
                     </span>
                 </div>
 
+                {/* Input blood type */}
                 <div className='flex items-center relative w-80 mt-10'>
                     <select name="blood_type" id="blood_type" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
                         <option value="" selected>Select a blood type</option>
@@ -148,6 +140,7 @@ function User_Registration() {
                     </select>
                 </div>
 
+                {/* Input gender */}
                 <div className='flex items-center relative w-80 mt-10'>
                     <select name="gender" id="gender" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
                         <option value="">Select a gender</option>
@@ -157,6 +150,7 @@ function User_Registration() {
                     </select>   
                 </div>
 
+                {/* Input sexuality */}
                 <div className='flex items-center relative w-80 mt-10'> 
                     <select name="sexuality" id="sexuality" className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl">
                         <option value="" selected>Select a sexuality</option>
@@ -167,6 +161,7 @@ function User_Registration() {
                     </select>
                 </div>
 
+                {/* Input birth date */}
                 <div className='flex items-center relative w-80 mt-10'> 
                     <span className='p-float-label w-full'>
                         <InputMask 
@@ -189,6 +184,7 @@ function User_Registration() {
                     </span>            */}
                 </div>
 
+                {/* Input zodiac sign */}
                 <div className='flex items-center relative w-80 mt-10'> 
                     <select name="zodiac_sign" id="zodiac_sign" className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl">
                         <option value="">Select a zodiac sign</option>
@@ -207,6 +203,7 @@ function User_Registration() {
                     </select>
                 </div>
 
+                {/* Input MBTI */}
                 <div className='flex items-center relative w-80 mt-10'>
                     <select name="mbti" id="mbti" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
                             <option value="" selected>Select a MBTI</option>
@@ -228,15 +225,15 @@ function User_Registration() {
                     </select>
                 </div>
 
+                {/* Input occupation */}
                 <div className='flex items-center relative w-80 mt-10'>
                     <span className="p-float-label w-full">
-                        <InputText id="occupation" name="occupation" value={valueOccupation} onChange={(e) => setValueOccupation(e.target.value)} required/>
+                        <InputText id="occupation" name="occupation" value={valueOccupation} onChange={(e) => setValueOccupation(e.target.value)}/>
                         <label htmlFor="occupation">Occupation</label>
                     </span>  
                 </div>
                 
-
-                <button className='bg-[#17E9AA] hover:bg-[#17e9aacb] w-36 rounded-2xl h-10 text-white font-bold mt-10 mb-10 ml-[90px] justify-center'>Next</button>     
+                <button className='bg-[#17E9AA] hover:bg-[#17e9aacb] w-36 rounded-2xl h-10 text-white font-bold mt-10 mb-10 ml-[90px] justify-center'>Register</button>     
             </form>
 
             
@@ -261,8 +258,6 @@ function User_Registration() {
                         stroke-dasharray="8 8"/>
                 </svg>
             </div>
-
-
         </div>
   )
 }

@@ -1,0 +1,18 @@
+.p-button.p-button-success {
+    background: #CB77FF;
+    color: #fff;
+    width: 12rem;
+    height: 3rem;
+    border-radius: 1rem;
+    font-weight: bold;
+    font-family: Quicksand, sans-serif;
+}
+
+.p-button.p-button-success:enabled:hover {
+    background: #cb77ffcc;
+    color: #fff;
+}
+.p-button.p-button-success:enabled:focus {
+    background: #cb77ffcc;
+    color: #fff;
+}

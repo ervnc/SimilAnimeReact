@@ -1,8 +1,10 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 
 function Progress() {
-    const score = 30
+    const score = 100
 
     const calcColor = (percent: any, start: any, end: any) => {
         let a = percent / 100
@@ -11,6 +13,8 @@ function Progress() {
 
         return "hsl(" + c + ", 100%, 50%)";
     }
+
+    
 
     return (
         <CircularProgressbar

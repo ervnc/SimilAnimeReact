@@ -38,6 +38,7 @@ model Characters {
   zodiac_sign   String
   mbti          String
   occupation    String
+  similarity    String
 
   user Users @relation(fields: [usersUsername], references: [username])
 

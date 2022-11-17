@@ -1,8 +1,9 @@
 import '../styles/main.css';
 import 'primeicons/primeicons.css';
-import "primereact/resources/themes/md-dark-indigo/theme.css";
-import '../components/css/password.css'
+import 'primereact/resources/themes/md-dark-indigo/theme.css';
+import '../components/css/input_global.css';
 import '../components/css/input_float.css';
+import '../components/css/password.css';
 
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -67,48 +68,54 @@ function Login() {
 
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_login bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
+            
+            <div className="container mx-auto grid lg:grid-cols-2 lg:px-0 md:grid-cols-1 md:px-32 sm:grid-cols-1 sm:px-32">
+                <div className="flex flex-col items-center">
 
-            <Toast ref={toast} className="fixed w-80 right-10 top-10 rounded-md" />
+                    <Toast ref={toast} className="fixed w-80 right-10 top-10 rounded-md" />
 
-            <h1 className='text-7xl text-white font-medium mt-16 ml-40 font-comfortaa'>
-                Simil
-                <span className='text-[#1D90F4]'>Anime</span>
-            </h1>
+                    <h1 className='text-7xl text-white font-medium mt-16 font-comfortaa'>
+                        Simil
+                        <span className='text-[#1D90F4]'>Anime</span>
+                    </h1>
 
-            <h5 className='max-w-[260px] text-white text-2xl mt-12 ml-40'>
-                The system that shows you
-                <span className='text-[#1D90F4]'> who you </span>
-                look like.
-            </h5>
+                    <h5 className='max-w-[260px] text-white text-2xl mt-12'>
+                        The system that shows you
+                        <span className='text-[#1D90F4]'> who you </span>
+                        look like.
+                    </h5>
 
-            <hr className='w-32 ml-40 mt-7 border-[#1D90F4]' />
+                    <hr className='w-32 mt-7 border-[#1D90F4]' />
 
-            <form className='ml-48' onSubmit={handleLogin} autoComplete="off">
-                {/* Input username */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className="p-float-label w-full">
-                        <InputText id="username" name="username" value={valueUsername} onChange={(e) => setValueUsername(e.target.value)} required/>
-                        <label htmlFor="username">Username</label>
-                    </span>
-                    <i className="pi pi-user" style={{ 'fontSize': '18px', 'right': '1rem' }}></i>
+                    <form onSubmit={handleLogin} autoComplete="off">
+                        {/* Input username */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className="p-float-label w-full">
+                                <InputText id="username" name="username" value={valueUsername} onChange={(e) => setValueUsername(e.target.value)} required/>
+                                <label htmlFor="username">Username</label>
+                            </span>
+                            <i className="pi pi-user" style={{ 'fontSize': '18px', 'right': '1rem', 'position': 'absolute' }}></i>
+                        </div>
+
+                        {/* Input password */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className='p-float-label w-full'>
+                                <Password className="w-full flex" id="password" name="password" value={valuePassword} onChange={(e) => setValuePassword(e.target.value)} feedback={false} toggleMask required/>
+                                <label htmlFor="password">Password</label>
+                            </span>
+                        </div>      
+
+                        <button className='bg-color_blue hover:bg-[#1d90f4d0] w-40 rounded-2xl h-10 text-white font-bold mt-10 ml-[50%] translate-x-[-50%]'>Log in</button>     
+
+                        <p className='text-white mt-5 text-center'>Don't have an account?
+                            <Link to='/user_registration' className='text-[#1D90F4] hover:text-[#1d90f4d0]'> Sign up</Link>
+                        </p> 
+                    </form>
+
+                    <footer className='text-white text-[10px] mt-20'>Made by Evandro & Laura</footer>
                 </div>
-
-                {/* Input password */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className='p-float-label w-full'>
-                        <Password className="w-full flex" id="password" name="password" value={valuePassword} onChange={(e) => setValuePassword(e.target.value)} feedback={false} toggleMask required/>
-                        <label htmlFor="password">Password</label>
-                    </span>
-                </div>      
-
-                <button className='bg-color_blue hover:bg-[#1d90f4d0] w-40 rounded-2xl h-10 text-white font-bold mt-10 ml-20'>Log in</button>     
-
-                <p className='text-white ml-12 mt-5'>Don't have an account?
-                    <Link to='/user_registration' className='text-[#1D90F4] hover:text-[#1d90f4d0]'> Sign up</Link>
-                </p> 
-            </form>
-
-            <footer className='text-white text-[10px] mt-20 ml-72'>Made by Evandro & Laura</footer>
+                <div></div>
+            </div>
 
             {/* Linhas de css */}
             <div className='absolute top-0 left-[-5px]'>

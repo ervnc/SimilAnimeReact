@@ -1,10 +1,14 @@
 import axios from "axios"
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import React from "react";
 import { useEffect, useState } from "react";
+import "../components/css/dialog.css";
+import "../components/css/button_table.css";
 
 const TableCharacters = () => {
 
     const [data, setData] = useState([]);
-    const [tableData, setTableData] = useState(data);
     const column = [
         { heading: 'Name', value: 'name' },
         { heading: 'Weight', value: 'weight' },
@@ -16,6 +20,8 @@ const TableCharacters = () => {
         { heading: 'Zodiac sign', value: 'zodiac_sign' },
         { heading: 'MBTI', value: 'mbti' },
         { heading: 'Occupation', value: 'occupation' },
+        { heading: 'Similarity', value: 'similarity' },
+        { heading: '', value: ''}
     ]
 
     let username = localStorage.getItem('username');
@@ -25,16 +31,36 @@ const TableCharacters = () => {
             .catch(err => console.log(err));
     }, [])
 
-    const deleteCharacter = (nameCharacter: string) => {
+    const [deleteCharacterDialog, setDeleteCharacterDialog] = useState(false);
+    const [character, setCharacter] = useState("");
+
+    const deleteCharacter = () => {
         let delData = data.filter((characters: any) => {                
-            return nameCharacter !== characters.name
+            return character !== characters.name
         });
-        axios.post(`http://localhost:1111/users/${username}/characters/${nameCharacter}/delete`)
+        axios.post(`http://localhost:1111/users/${username}/characters/${character}/delete`)
         setData(delData);
-        console.log(delData);
+        setDeleteCharacterDialog(false);
     }
 
-    const TableHeadItem = ({ item }: any) => <th>{item.heading}</th>
+    const confirmDeleteCharacter = (characterName: any) => {
+        setCharacter(characterName);
+        setDeleteCharacterDialog(true);
+    }
+
+    const hideDeleteCharacterDialog = () => {
+        setDeleteCharacterDialog(false);
+    }
+
+    const deleteCharacterDialogFooter = (
+        <React.Fragment>
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCharacterDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteCharacter} />
+        </React.Fragment>
+    );
+
+
+    const TableHeadItem = ({ item }: any) => <th className="p-4 border-b border-neutral-800">{item.heading}</th>
     // const TableRow = ({ item, column }: any) => (
     //     <tr>
     //         {column.map((columnItem: any, index: any) => {
@@ -45,37 +71,50 @@ const TableCharacters = () => {
     // )
 
     return (
-        <table className="text-white w-full">
-            <thead>
-                <tr>
-                    {column.map((item: any) => <TableHeadItem item={item}/>)}
-                </tr>
-            </thead>
+        <div className="p-12">
 
-            <tbody>
-                {data.map((item: any) => {
-                    return (
-                        <>
-                            <tr>
-                                <td>{item.name}</td>
-                                <td>{item.weight}</td>
-                                <td>{item.height}</td>
-                                <td>{item.blood_type}</td>
-                                <td>{item.gender}</td>
-                                <td>{item.sexuality}</td>
-                                <td>{item.birthday}</td>
-                                <td>{item.zodiac_sign}</td>
-                                <td>{item.mbti}</td>
-                                <td>{item.occupation}</td>
-                                <td>
-                                    <button onClick={() => deleteCharacter(item.name)}>Excluir</button>
-                                </td>
-                            </tr>
-                        </>
-                    )
-                })}
-            </tbody>
-        </table>
+            <table className="text-white w-full border-collapse">
+                <caption className="text-left p-6 text-xl border-b border-neutral-600 bg-[#222020] rounded-t-xl">Characters</caption>
+                <thead className="bg-[#222020]">
+                    <tr>
+                        {column.map((item: any) => <TableHeadItem item={item}/>)}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {data.map((item: any) => {
+                        return (
+                            <>
+                                <tr>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.name}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.weight}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.height}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.blood_type}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.gender}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.sexuality}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.birthday}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.zodiac_sign}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.mbti}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.occupation}</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center">{item.similarity}%</td>
+                                    <td className="border-b border-neutral-600 p-4 text-center buttonTable">
+                                        <Button icon="pi pi-pencil" className="p-button-rounded mr-2 p-button-warning" aria-label="Pencil" onClick={() => {}} />
+                                        <Button icon="pi pi-trash" className="p-button-rounded mr-2 p-button-danger" aria-label="Trash" onClick={() => confirmDeleteCharacter(item.name)} />
+                                    </td>
+                                </tr>
+                            </>
+                        )
+                    })}
+                </tbody>
+            </table>
+
+            <Dialog visible={deleteCharacterDialog} breakpoints={{'960px': '75vw'}} style={{width: '50vw'}} header="Confirm" modal footer={deleteCharacterDialogFooter} onHide={hideDeleteCharacterDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem'}} />
+                    {character && <span>Are you sure you want to delete <b>{character}</b>?</span>}
+                </div>
+            </Dialog>
+        </div>
     )
 }
 
