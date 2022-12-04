@@ -23,7 +23,7 @@ function Main_page() {
             if (response.data.auth == false) {
                 navigate("/");
             } else {
-                setLoginStatus(response.data.user[0].username);
+                setLoginStatus(response.data.user[0].name);
             }
         })
     }, [])

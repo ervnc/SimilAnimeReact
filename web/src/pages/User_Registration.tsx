@@ -1,5 +1,5 @@
 import '../styles/main.css';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import axios from 'axios';
 import { Password } from 'primereact/password';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 
 import '../components/css/input_number.css';
+import { Toast } from 'primereact/toast';
 
 function User_Registration() {
 
@@ -22,6 +23,21 @@ function User_Registration() {
 
     const navigate = useNavigate();
 
+    const toast = useRef(null as any);
+
+    // ====================
+    // Abrir Toast de erro
+    // ====================
+    const showError = () => {
+        toast.current.show({ 
+            content:'Username already exists!', 
+            life: 2000,
+            closable: false,
+            className: 'bg-[#e74c3c] border-l-4 border-[#fff]',
+            contentClassName: 'justify-center flex text-base items-center font-bold font-quicksand'
+        });
+    }
+
     async function handleCreateUser(event: FormEvent) {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
@@ -29,9 +45,9 @@ function User_Registration() {
 
         try {
             await axios.post('http://localhost:1111/user_registration', {
-                username: data.username, 
-                password: data.password, 
-                name: data.name,
+                username: String(data.username).trim(), 
+                password: String(data.password).trim(), 
+                name: String(data.name).trim(),
                 weight: Number(data.weight),
                 height: Number(data.height),
                 blood_type: data.blood_type,
@@ -40,10 +56,15 @@ function User_Registration() {
                 birth_date: data.birth_date,
                 zodiac_sign: data.zodiac_sign,
                 mbti: data.mbti,
-                occupation: data.occupation,
+                occupation: String(data.occupation).trim(),
                 image: String(valueImage),
+            }).then((res) => {
+                if (res.data == "") {
+                    showError();
+                } else {
+                    navigate("/");
+                }
             })
-            navigate("/");
         } catch(err) {
             console.log(err);
             alert('ERRO');
@@ -54,6 +75,8 @@ function User_Registration() {
         <div className='mx-auto flex flex-col h-screen bg-background_user_registration bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
             <div className="container mx-auto grid lg:grid-cols-2 lg:px-0 md:grid-cols-1 md:px-32 sm:grid-cols-1 sm:px-32">
                 <div className='flex flex-col items-center'>
+
+                    <Toast ref={toast} className="fixed w-80 right-10 top-10 rounded-md" />
 
                     <h1 className='text-4xl text-white font-bold mt-12 font-comfortaa z-10'>
                         <span className='text-[#17E9AA]'>User </span>
@@ -80,7 +103,7 @@ function User_Registration() {
                         <div className='flex items-center relative w-80 mt-10'>
                             <span className="p-float-label w-full">
                                 <InputText id="username" name="username" value={valueUsername} onChange={(e) => setValueUsername(e.target.value)} required/>
-                                <label htmlFor="username">Username</label>
+                                <label htmlFor="username">Username<span className='text-red-600'>*</span></label>
                             </span>
                         </div>
 
@@ -88,7 +111,7 @@ function User_Registration() {
                         <div className='flex items-center relative w-80 mt-10'>
                             <span className='p-float-label w-full'>
                                 <Password className="w-full flex" id="password" name="password" value={valuePassword} onChange={(e) => setValuePassword(e.target.value)} toggleMask required/>
-                                <label htmlFor="password">Password</label>
+                                <label htmlFor="password">Password<span className='text-red-600'>*</span></label>
                             </span>
                         </div>
 
@@ -96,7 +119,7 @@ function User_Registration() {
                         <div className='flex items-center relative w-80 mt-10'>
                             <span className="p-float-label w-full">
                                 <InputText id="name" name="name" value={valueName} onChange={(e) => setValueName(e.target.value)} required/>
-                                <label htmlFor="name">Name</label>
+                                <label htmlFor="name">Name<span className='text-red-600'>*</span></label>
                             </span>
                         </div>
             
@@ -239,6 +262,10 @@ function User_Registration() {
                                 <InputText id="occupation" name="occupation" value={valueOccupation} onChange={(e) => setValueOccupation(e.target.value)}/>
                                 <label htmlFor="occupation">Occupation</label>
                             </span>  
+                        </div>
+
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className='text-red-600'>*&nbsp;</span> Required
                         </div>
                         
                         <button className='bg-[#17E9AA] hover:bg-[#17e9aacb] w-36 rounded-2xl h-10 text-white font-bold mt-10 mb-10 ml-[90px] justify-center'>Register</button>     
