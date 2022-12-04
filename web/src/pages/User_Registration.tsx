@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
+
 import '../components/css/input_number.css';
 
 function User_Registration() {
@@ -17,6 +18,8 @@ function User_Registration() {
     const [weightVerify, setWeightVerify] = useState(null);
     const [heightVerify, setHeightVerify] = useState(null);
     const [dateVerify, setDateVerify] = useState("");
+    const [valueImage, setValueImage] = useState('');
+
     const navigate = useNavigate();
 
     async function handleCreateUser(event: FormEvent) {
@@ -38,6 +41,7 @@ function User_Registration() {
                 zodiac_sign: data.zodiac_sign,
                 mbti: data.mbti,
                 occupation: data.occupation,
+                image: String(valueImage),
             })
             navigate("/");
         } catch(err) {
@@ -48,195 +52,202 @@ function User_Registration() {
 
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_user_registration bg-cover bg-no-repeat shadow-left font-quicksand font-normal overflow-x-hidden'>
+            <div className="container mx-auto grid lg:grid-cols-2 lg:px-0 md:grid-cols-1 md:px-32 sm:grid-cols-1 sm:px-32">
+                <div className='flex flex-col items-center'>
+
+                    <h1 className='text-4xl text-white font-bold mt-12 font-comfortaa z-10'>
+                        <span className='text-[#17E9AA]'>User </span>
+                        registration
+                    </h1>
+
+                    <h5 className='max-w-[400px] text-white text-lg mt-7 z-10 text-center'>
+                        Tell us more about <span className='text-[#17E9AA]'>yourself</span>! Your data will be used to calculate your similarity to the characters.
+                    </h5>
+
+                    <hr className='w-32 mt-7 border-[#17E9AA]' />
+
+                    <form className='z-10' onSubmit={handleCreateUser} autoComplete='off'>
+                        {/* Input image */}
+                        <div>
+                            <img src={valueImage} className="mt-7 rounded-lg mb-10 ml-[50%] translate-x-[-50%] max-w-[320px]"/>
+                            <span className="p-float-label w-full">
+                                <InputText id="image" name="image" value={valueImage} onChange={(e) => setValueImage(e.target.value)}/>
+                                <label htmlFor="image">Image URL</label>
+                            </span>
+                        </div>
+
+                        {/* Input username */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className="p-float-label w-full">
+                                <InputText id="username" name="username" value={valueUsername} onChange={(e) => setValueUsername(e.target.value)} required/>
+                                <label htmlFor="username">Username</label>
+                            </span>
+                        </div>
+
+                        {/* Input password */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className='p-float-label w-full'>
+                                <Password className="w-full flex" id="password" name="password" value={valuePassword} onChange={(e) => setValuePassword(e.target.value)} toggleMask required/>
+                                <label htmlFor="password">Password</label>
+                            </span>
+                        </div>
+
+                        {/* Input name */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className="p-float-label w-full">
+                                <InputText id="name" name="name" value={valueName} onChange={(e) => setValueName(e.target.value)} required/>
+                                <label htmlFor="name">Name</label>
+                            </span>
+                        </div>
             
-            <h1 className='text-4xl text-white font-bold mt-12 ml-40 font-comfortaa z-10'>
-                <span className='text-[#17E9AA]'>User </span>
-                 Registration
-            </h1>
 
+                        {/* Input weight */}
+                        <div className='flex items-center relative w-80 mt-10'> 
+                            <span className='p-float-label w-full'>
+                                <InputNumber 
+                                    id="weight" 
+                                    name="weight"
+                                    inputId="currency-us" 
+                                    value={weightVerify} 
+                                    onValueChange={(e) => setWeightVerify(e.value)} 
+                                    mode="decimal" 
+                                    locale="en-US" 
+                                    min={0}
+                                    minFractionDigits={1} 
+                                    className='w-full inputNumber'
+                                    showButtons={true}
+                                    inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
+                                    />
+                                <label htmlFor="weight">Weight</label>
+                            </span>
+                        </div>
 
-            <h5 className='max-w-[260px] text-white text-2xl mt-7 ml-40 z-10'>
-                The system that shows you
-                <span className='text-[#17E9AA]'> who you </span>
-                look like.
-            </h5>
+                        {/* Input height */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className='p-float-label w-full'>
+                                <InputNumber 
+                                    id="height" 
+                                    name="height" 
+                                    inputId="currency-us" 
+                                    value={heightVerify} 
+                                    onValueChange={(e) => setHeightVerify(e.value)} 
+                                    mode="decimal" 
+                                    locale="en-US" 
+                                    min={0}
+                                    minFractionDigits={1}  
+                                    className='w-full inputNumber'
+                                    showButtons={true}
+                                    inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
+                                    />
+                                <label htmlFor="height">Height</label>
+                            </span>
+                        </div>
 
-            <hr className='w-32 ml-40 mt-7 border-[#17E9AA]' />
+                        {/* Input blood type */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <select name="blood_type" id="blood_type" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
+                                <option value="" selected>Select a blood type</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
+                            </select>
+                        </div>
 
-            <form className='ml-48 z-10' onSubmit={handleCreateUser} autoComplete='off'>
+                        {/* Input gender */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <select name="gender" id="gender" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
+                                <option value="">Select a gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Non-binary">Non-binary</option>
+                            </select>   
+                        </div>
 
-                {/* Input username */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className="p-float-label w-full">
-                        <InputText id="username" name="username" value={valueUsername} onChange={(e) => setValueUsername(e.target.value)} required/>
-                        <label htmlFor="username">Username</label>
-                    </span>
+                        {/* Input sexuality */}
+                        <div className='flex items-center relative w-80 mt-10'> 
+                            <select name="sexuality" id="sexuality" className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl">
+                                <option value="" selected>Select a sexuality</option>
+                                <option value="Straight">Straight</option>
+                                <option value="Gay">Gay</option>
+                                <option value="Bi/pan">Bi/pan</option>
+                                <option value="Asexual">Asexual</option>
+                            </select>
+                        </div>
+
+                        {/* Input birth date */}
+                        <div className='flex items-center relative w-80 mt-10'> 
+                            <span className='p-float-label w-full'>
+                                <InputMask 
+                                    mask="99/99" 
+                                    slotChar="mm/dd" 
+                                    id="birth_date" 
+                                    name="birth_date" 
+                                    value={dateVerify} 
+                                    onChange={(e) => setDateVerify(e.value)}
+                                    className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
+                                >
+                                </InputMask>
+                                <label htmlFor="birth_date">Birth date</label>
+                            </span>
+                        </div>
+
+                        {/* Input zodiac sign */}
+                        <div className='flex items-center relative w-80 mt-10'> 
+                            <select name="zodiac_sign" id="zodiac_sign" className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl">
+                                <option value="">Select a zodiac sign</option>
+                                <option value="Aries">Aries</option>
+                                <option value="Taurus">Taurus</option>
+                                <option value="Gemini">Gemini</option>
+                                <option value="Cancer">Cancer</option>
+                                <option value="Leo">Leo</option>
+                                <option value="Virgo">Virgo</option>
+                                <option value="Libra">Libra</option>
+                                <option value="Scorpio">Scorpio</option>
+                                <option value="Sagittarius">Sagittarius</option>
+                                <option value="Capricorn">Capricorn</option>
+                                <option value="Aquarius">Aquarius</option>
+                                <option value="Pisces">Pisces</option>
+                            </select>
+                        </div>
+
+                        {/* Input MBTI */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <select name="mbti" id="mbti" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
+                                    <option value="" selected>Select a MBTI</option>
+                                    <option value="INTP">INTP</option>
+                                    <option value="INTJ">INTJ</option>
+                                    <option value="ENTJ">ENTJ</option>
+                                    <option value="INFJ">INFJ</option>
+                                    <option value="INFP">INFP</option>
+                                    <option value="ENFJ">ENFJ</option>
+                                    <option value="ENFP">ENFP</option>
+                                    <option value="ISTJ">ISTJ</option>
+                                    <option value="ISFJ">ISFJ</option>
+                                    <option value="ESTJ">ESTJ</option>
+                                    <option value="ESFJ">ESFJ</option>
+                                    <option value="ISTP">ISTP</option>
+                                    <option value="ISFP">ISFP</option>
+                                    <option value="ESTP">ESTP</option>
+                                    <option value="ESFP">ESFP</option>
+                            </select>
+                        </div>
+
+                        {/* Input occupation */}
+                        <div className='flex items-center relative w-80 mt-10'>
+                            <span className="p-float-label w-full">
+                                <InputText id="occupation" name="occupation" value={valueOccupation} onChange={(e) => setValueOccupation(e.target.value)}/>
+                                <label htmlFor="occupation">Occupation</label>
+                            </span>  
+                        </div>
+                        
+                        <button className='bg-[#17E9AA] hover:bg-[#17e9aacb] w-36 rounded-2xl h-10 text-white font-bold mt-10 mb-10 ml-[90px] justify-center'>Register</button>     
+                    </form>
                 </div>
+                <div></div>
+            </div>
 
-                {/* Input name */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className="p-float-label w-full">
-                        <InputText id="name" name="name" value={valueName} onChange={(e) => setValueName(e.target.value)} required/>
-                        <label htmlFor="name">Name</label>
-                    </span>
-                </div>
-      
-                {/* Input password */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className='p-float-label w-full'>
-                        <Password className="w-full flex" id="password" name="password" value={valuePassword} onChange={(e) => setValuePassword(e.target.value)} toggleMask required/>
-                        <label htmlFor="password">Password</label>
-                    </span>
-                </div>
-
-                {/* Input weight */}
-                <div className='flex items-center relative w-80 mt-10'> 
-                    <span className='p-float-label w-full'>
-                        <InputNumber 
-                            id="weight" 
-                            name="weight"
-                            inputId="currency-us" 
-                            value={weightVerify} 
-                            onValueChange={(e) => setWeightVerify(e.value)} 
-                            mode="decimal" 
-                            locale="en-US" 
-                            minFractionDigits={1} 
-                            className='w-full inputNumber'
-                            showButtons={true}
-                            inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
-                            />
-                        <label htmlFor="weight">Weight</label>
-                    </span>
-                </div>
-
-                {/* Input height */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className='p-float-label w-full'>
-                        <InputNumber 
-                            id="height" 
-                            name="height" 
-                            inputId="currency-us" 
-                            value={heightVerify} 
-                            onValueChange={(e) => setHeightVerify(e.value)} 
-                            mode="decimal" 
-                            locale="en-US" 
-                            minFractionDigits={1}  
-                            className='w-full inputNumber'
-                            showButtons={true}
-                            inputClassName='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'
-                            />
-                        <label htmlFor="height">Height</label>
-                    </span>
-                </div>
-
-                {/* Input blood type */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <select name="blood_type" id="blood_type" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
-                        <option value="" selected>Select a blood type</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="AB">AB</option>
-                        <option value="O">O</option>
-                    </select>
-                </div>
-
-                {/* Input gender */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <select name="gender" id="gender" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
-                        <option value="">Select a gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Non-binary">Non-binary</option>
-                    </select>   
-                </div>
-
-                {/* Input sexuality */}
-                <div className='flex items-center relative w-80 mt-10'> 
-                    <select name="sexuality" id="sexuality" className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl">
-                        <option value="" selected>Select a sexuality</option>
-                        <option value="Straight">Straight</option>
-                        <option value="Gay">Gay</option>
-                        <option value="Bi/pan">Bi/pan</option>
-                        <option value="Asexual">Asexual</option>
-                    </select>
-                </div>
-
-                {/* Input birth date */}
-                <div className='flex items-center relative w-80 mt-10'> 
-                    <span className='p-float-label w-full'>
-                        <InputMask 
-                            mask="99/99" 
-                            slotChar="mm/dd" 
-                            id="birth_date" 
-                            name="birth_date" 
-                            value={dateVerify} 
-                            onChange={(e) => setDateVerify(e.value)}
-                            className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
-                        >
-                        </InputMask>
-                        <label htmlFor="birth_date">Birth date</label>
-                    </span>
-                    {/* <span className="p-float-label w-full">
-                        <Controller name="date" control={control} render={({ field }) => (
-                            <Calendar className="inputDate" id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} dateFormat="dd/mm" mask="99/99" showIcon />
-                        )} />
-                        <label htmlFor="date">Birthday</label>
-                    </span>            */}
-                </div>
-
-                {/* Input zodiac sign */}
-                <div className='flex items-center relative w-80 mt-10'> 
-                    <select name="zodiac_sign" id="zodiac_sign" className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl">
-                        <option value="">Select a zodiac sign</option>
-                        <option value="Aries">Aries</option>
-                        <option value="Taurus">Taurus</option>
-                        <option value="Gemini">Gemini</option>
-                        <option value="Cancer">Cancer</option>
-                        <option value="Leo">Leo</option>
-                        <option value="Virgo">Virgo</option>
-                        <option value="Libra">Libra</option>
-                        <option value="Scorpio">Scorpio</option>
-                        <option value="Sagittarius">Sagittarius</option>
-                        <option value="Capricorn">Capricorn</option>
-                        <option value="Aquarius">Aquarius</option>
-                        <option value="Pisces">Pisces</option>
-                    </select>
-                </div>
-
-                {/* Input MBTI */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <select name="mbti" id="mbti" className='bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl'>
-                            <option value="" selected>Select a MBTI</option>
-                            <option value="INTP">INTP</option>
-                            <option value="INTJ">INTJ</option>
-                            <option value="ENTJ">ENTJ</option>
-                            <option value="INFJ">INFJ</option>
-                            <option value="INFP">INFP</option>
-                            <option value="ENFJ">ENFJ</option>
-                            <option value="ENFP">ENFP</option>
-                            <option value="ISTJ">ISTJ</option>
-                            <option value="ISFJ">ISFJ</option>
-                            <option value="ESTJ">ESTJ</option>
-                            <option value="ESFJ">ESFJ</option>
-                            <option value="ISTP">ISTP</option>
-                            <option value="ISFP">ISFP</option>
-                            <option value="ESTP">ESTP</option>
-                            <option value="ESFP">ESFP</option>
-                    </select>
-                </div>
-
-                {/* Input occupation */}
-                <div className='flex items-center relative w-80 mt-10'>
-                    <span className="p-float-label w-full">
-                        <InputText id="occupation" name="occupation" value={valueOccupation} onChange={(e) => setValueOccupation(e.target.value)}/>
-                        <label htmlFor="occupation">Occupation</label>
-                    </span>  
-                </div>
-                
-                <button className='bg-[#17E9AA] hover:bg-[#17e9aacb] w-36 rounded-2xl h-10 text-white font-bold mt-10 mb-10 ml-[90px] justify-center'>Register</button>     
-            </form>
-
-            
+            {/* Linhas de CSS */}
             <div className='absolute top-[-100px] left-[-5px]'>
                 <svg width="118" height="363" viewBox="0 0 118 363" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path 

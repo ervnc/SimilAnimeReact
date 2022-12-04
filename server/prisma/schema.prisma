@@ -23,6 +23,7 @@ model Users {
   zodiac_sign String
   mbti        String
   occupation  String
+  image       String
   character   Characters[]
 }
 
@@ -39,6 +40,7 @@ model Characters {
   mbti          String
   occupation    String
   similarity    String
+  image         String
 
   user Users @relation(fields: [usersUsername], references: [username])
 

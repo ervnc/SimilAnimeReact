@@ -19,7 +19,6 @@ function Login() {
     const [valueUsername, setValueUsername] = useState('');
     const [valuePassword, setValuePassword] = useState('');
 
-
     // ====================
     // Abrir Toast de erro
     // ====================
@@ -55,7 +54,6 @@ function Login() {
                 if (respostaJson.data.auth == true) {
                     localStorage.setItem("tokenUsuario", respostaJson.data.token);
                     localStorage.setItem('username', respostaJson.data.user[0].username);
-                    console.log(respostaJson);
                     navigate("/main_page");
                 } else {
                     showError();

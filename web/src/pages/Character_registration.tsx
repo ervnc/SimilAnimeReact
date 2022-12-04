@@ -1,73 +1,41 @@
 import axios from "axios";
+import { Dialog } from "primereact/dialog";
 import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
+import { ProgressBar } from "primereact/progressbar";
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 function Character_registration() {
 
-    // const [nameCharacter, setNameCharacter] = useState('');
     const [valueName, setValueName] = useState('');
     const [valueOccupation, setValueOccupation] = useState('');
     const [weightVerify, setWeightVerify] = useState(null);
     const [heightVerify, setHeightVerify] = useState(null);
     const [dateVerify, setDateVerify] = useState("");
+    const [progressSimilarity, setProgressSimilarity] = useState(false);
+    const progressSimilarityDialog = () => {
+        setProgressSimilarity(true);
+    }
+    const hideProgressSimilarityDialog = () => {
+        setProgressSimilarity(false);
+    }
+    const [value1, setValue1] = useState(0);
+    const [valueImage, setValueImage] = useState('');
 
     const navigate = useNavigate();
 
-    
+    // =============================
+    // Calcular cor da similaridade
+    // =============================
+    const calcColor = (percent: any, start: any, end: any) => {
+        let a = percent / 100
+        let b = (end - start) * a
+        let c = b + start;
 
-        // (async () => {
-    
-        //     let query = `
-        //         query {
-        //             Page (page: 1, perPage: 25) {
-        //             pageInfo {
-        //                 total
-        //                 perPage
-        //                 currentPage
-        //                 hasNextPage
-        //             }
-        //             characters (search: "${valueName}") {
-        //                 id
-        //                 name {
-        //                     userPreferred
-        //                 }
-        //                 image {
-        //                     large
-        //                 }
-        //             }
-        //         }
-        //     }`
-    
-        //     var options = {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Accept': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             query: query
-        //         })
-        //     }
-    
-        //     const resultado = await fetch(`https://graphql.anilist.co`, options);
-        //     const respostaJSON = await resultado.json();
-    
-        //     await respostaJSON.data.Page.characters.filter((result: any) => {
-        //         console.log(result.name.userPreferred);
-        //         return (
-        //             <>
-        //                 <div className="w-10 h-10 z-30">{result.name.userPreferred}</div>
-        //             </>
-        //         )
-        //         //setTeste()
-        //     });
-        //     return respostaJSON;
-        //     // console.log(respostaJSON.data.Page.characters);
-        // })();
+        return "hsl(" + c + ", 100%, 50%)";
+    }
 
     let tokenUsuario = localStorage.getItem("tokenUsuario");
     const [weight, setWeight] = useState('');
@@ -80,13 +48,11 @@ function Character_registration() {
     const [MBTI, setMBTI] = useState('');
     const [occupation, setOccupation] = useState('');
 
-
     useEffect(() => {
         axios.get("http://localhost:1111/user", {
             method: "GET",
             headers: {"authorization": `${tokenUsuario}`}
         }).then((response) => {
-            console.log(response);
             setWeight(response.data.user[0].weight);
             setHeight(response.data.user[0].height);
             setBlood(response.data.user[0].blood_type);
@@ -153,6 +119,9 @@ function Character_registration() {
             }
         }
 
+        let val = value1;
+        val = count;
+
         try {
             await axios.post(`http://localhost:1111/users/${username}/characters`, {
                 usersUsername: username, 
@@ -167,14 +136,19 @@ function Character_registration() {
                 mbti: data.mbti,
                 occupation: data.occupation,
                 similarity: String(count),
+                image: String(valueImage),
             })
-            navigate("/main_page");
+            setValue1(val);
+            setTimeout(() => {
+                hideProgressSimilarityDialog();
+                navigate('/main_page');
+            }, 5000);
         } catch(err) {
             console.log(err);
             alert('ERRO');
         }
     }
-
+    
     return (
         <div className='mx-auto flex flex-col h-screen bg-background_character_registration bg-cover bg-no-repeat shadow-right font-quicksand font-normal overflow-x-hidden'>
             <div className="container mx-auto grid lg:grid-cols-2 lg:px-0 md:grid-cols-1 md:px-32 sm:grid-cols-1 sm:px-32">
@@ -184,14 +158,22 @@ function Character_registration() {
                         <span className='text-[#FFA800]'>Character </span>
                             Registration
                     </h1>
-                    <hr className='w-32 mt-7 border-[#FFA800]' />
-
-                    <h5 className='max-w-[350px] text-white text-xl mt-7'>
-                        Enter the character's name below. If we already know them, we'll put some information about them for you.
-                        <span className='text-[#17E9AA]'> </span>
+                    <h5 className='max-w-[350px] text-white text-xl mt-7 text-center'>
+                        Try to fill in all the character data. They'll be used for the similarity calculation.
                     </h5>
 
+                    <hr className='w-32 mt-7 border-[#FFA800]' />
+
                     <form onSubmit={handleCreateCharacter} autoComplete="off">
+                        {/* Input image */}
+                        <div>
+                            <img src={valueImage} className="mt-7 rounded-lg mb-10 ml-[50%] translate-x-[-50%] max-w-[320px]"/>
+                            <span className="p-float-label w-full">
+                                <InputText id="image" name="image" value={valueImage} onChange={(e) => setValueImage(e.target.value)}/>
+                                <label htmlFor="image">Image URL</label>
+                            </span>
+                        </div>
+
                         {/* Input name */}
                         <div className='flex items-center relative w-80 mt-10'>
                             <span className="p-float-label w-full">
@@ -211,6 +193,7 @@ function Character_registration() {
                                     onValueChange={(e) => setWeightVerify(e.value)} 
                                     mode="decimal" 
                                     locale="en-US" 
+                                    min={0}
                                     minFractionDigits={1} 
                                     className='w-full inputNumberCharacter'
                                     showButtons={true}
@@ -230,7 +213,8 @@ function Character_registration() {
                                     value={heightVerify} 
                                     onValueChange={(e) => setHeightVerify(e.value)} 
                                     mode="decimal" 
-                                    locale="en-US" 
+                                    locale="en-US"
+                                    min={0}
                                     minFractionDigits={1}  
                                     className='w-full inputNumberCharacter'
                                     showButtons={true}
@@ -285,7 +269,7 @@ function Character_registration() {
                                     className="bg-color_input px-5 py-4 pr-12 h-full w-full text-white placeholder:text-[#E5E5E5] rounded-xl"
                                 >
                                 </InputMask>
-                                <label htmlFor="birth_date">Birth date</label>
+                                <label htmlFor="birthday">Birth date</label>
                             </span>
                         </div>
 
@@ -338,10 +322,14 @@ function Character_registration() {
                             </span>  
                         </div>
 
-                        <button className='bg-[#FFA800] hover:bg-[#ffaa00c4] w-36 rounded-2xl h-10 text-white font-bold mt-10 ml-[90px] justify-center mb-10'>Register</button>     
+                        <button className='bg-[#FFA800] hover:bg-[#ffaa00c4] w-36 rounded-2xl h-10 text-white font-bold mt-10 ml-[90px] justify-center mb-10' onClick={() => progressSimilarityDialog()}>Register</button>     
                     </form>
                 </div>
 
+                {/* Dialog similaridade */}
+                <Dialog visible={progressSimilarity} breakpoints={{'960px': '75vw'}} style={{width: '50vw'}} closable={false} header="Calculating similarity" modal footer={""} onHide={hideProgressSimilarityDialog}>
+                    <ProgressBar value={value1} color={calcColor(value1, 0, 120)} showValue={true}></ProgressBar>
+                </Dialog>
             </div>
         </div>
     );

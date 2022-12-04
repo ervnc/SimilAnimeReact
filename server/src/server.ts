@@ -64,7 +64,7 @@ app.post('/login', async (request: any, response: any, next: any) => {
                 const id = username;
                 var privateKey = fs.readFileSync('./private.key', 'utf8');
                 var token : any = jwt.sign({ id }, privateKey, {
-                    expiresIn: 600, // 5min 
+                    expiresIn: 1800, // 30min 
                     algorithm: "RS256"
                 });
                 console.log("Fez login e gerou token!");
@@ -118,12 +118,13 @@ app.post('/user_registration', async  (req: any, res: any) => {
                 zodiac_sign: body.zodiac_sign,
                 mbti: body.mbti,
                 occupation: body.occupation,
+                image: body.image,
             }
         }).catch(e => {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
                     console.log(
-                        'There is a unique constraint violation, a new user cannot be created with this email'
+                        'There is a unique constraint violation'
                       )
                 }
             }
@@ -147,8 +148,6 @@ app.post('/users/:username/characters', async (req: any, res: any) => {
     const id = req.params.username;
     const body = req.body;
 
-
-
     const character = await prisma.characters.create({
         data: {
             usersUsername: id,
@@ -163,12 +162,13 @@ app.post('/users/:username/characters', async (req: any, res: any) => {
             mbti: body.mbti,
             occupation: body.occupation,
             similarity: body.similarity,
+            image: body.image,
         }
     }).catch(e => {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === 'P2002') {
                 console.log(
-                    'There is a unique constraint violation, a new user cannot be created with this email'
+                    'There is a unique constraint violation'
                   )
             }
         }
@@ -206,11 +206,104 @@ app.post('/users/:username/characters/:characters/delete', async (req: any, res:
     return res.status(200).json({deleteCharacter: deleteCharacter});
 })
 
+
+app.get('/users/:username/characters/:nameCharacter/edit', async (req: any, res: any) => {
+    const characters = await prisma.characters.findUnique({
+        where: {
+            name_usersUsername: {
+                name: req.params.nameCharacter,
+                usersUsername: req.params.username,
+            }
+        }
+    })
+
+    return res.status(200).json({character: characters});
+})
+
+app.post('/users/:username/characters/:nameCharacter/edit', async (req: any, res: any) => {
+    const body = req.body;
+
+    const characters = await prisma.characters.update({
+        where: {
+            name_usersUsername: {
+                name: req.params.nameCharacter,
+                usersUsername: req.params.username,
+            }
+        },
+        data: {
+            name: body.name,
+            weight: body.weight,
+            height: body.height,
+            blood_type: body.blood_type,
+            gender: body.gender,
+            sexuality: body.sexuality,
+            birthday: body.birthday,
+            zodiac_sign: body.zodiac_sign,
+            mbti: body.mbti,
+            occupation: body.occupation,
+            similarity: body.similarity,
+            image: body.image,
+        }
+    }).catch(e => {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === 'P2002') {
+                console.log(
+                    'There is a unique constraint violation'
+                  )
+            }
+        }
+    })
+    return res.status(200).json({character: characters});
+})
+
+
+app.post('/users/:username/edit', async (req: any, res: any) => {
+    const body = req.body;
+    const password = req.body.password;
+
+    await bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
+            console.log(err);
+        }
+        const user = await prisma.users.update({
+            where: {
+                username: req.params.username,
+            },
+            data: {
+                password: hash,
+                name: body.name,
+                weight: body.weight,
+                height: body.height,
+                blood_type: body.blood_type,
+                gender: body.gender,
+                sexuality: body.sexuality,
+                birth_date: body.birth_date,
+                zodiac_sign: body.zodiac_sign,
+                mbti: body.mbti,
+                occupation: body.occupation,
+                image: body.image,
+                character: {
+                    updateMany: {
+                        where: {
+                            name: {},
+                        },
+                        data: {
+                            similarity: body.similarity,
+                        }
+                    } 
+                },
+            },
+        })
+
+        return res.status(200).json({user});
+    })
+})
+
+
 app.get('/users/:username/characters/order', async (req: any, res: any) => {
-    let username = req.params.username;
     const characters = await prisma.characters.findMany({
         where: {
-            usersUsername: username,
+            usersUsername: req.params.username,
         },
         orderBy: {
             similarity: 'desc',

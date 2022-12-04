@@ -1,0 +1,26 @@
+.p-progressbar {
+    position: relative;
+    height: 25px;
+    border-radius: 5px
+}
+
+.p-progressbar-determinate .p-progressbar-value {
+    height: 100%;
+    width: 0%;
+    display: none;
+    border: 0 none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px 0 0 5px;
+    overflow: hidden;
+}
+
+.p-progressbar-determinate .p-progressbar-label {
+    display: inline-flex;
+    color: #fff;
+}
+
+.p-progressbar-determinate .p-progressbar-value-animate {
+    transition: width 1s ease-in-out;
+}

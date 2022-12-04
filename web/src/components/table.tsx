@@ -5,11 +5,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "../components/css/dialog.css";
 import "../components/css/button_table.css";
+import { Link } from "react-router-dom";
 
 const TableCharacters = () => {
 
     const [data, setData] = useState([]);
     const column = [
+        { heading: 'Image', value: 'image'},
         { heading: 'Name', value: 'name' },
         { heading: 'Weight', value: 'weight' },
         { heading: 'Height', value: 'height' },
@@ -41,6 +43,7 @@ const TableCharacters = () => {
         axios.post(`http://localhost:1111/users/${username}/characters/${character}/delete`)
         setData(delData);
         setDeleteCharacterDialog(false);
+        window.location.reload();
     }
 
     const confirmDeleteCharacter = (characterName: any) => {
@@ -61,14 +64,6 @@ const TableCharacters = () => {
 
 
     const TableHeadItem = ({ item }: any) => <th className="p-4 border-b border-neutral-800">{item.heading}</th>
-    // const TableRow = ({ item, column }: any) => (
-    //     <tr>
-    //         {column.map((columnItem: any, index: any) => {
-    //             return <td>{item[`${columnItem.value}`]}</td>   
-    //         })}
-    //         <button onClick={() => deleteCharacter()} id={item['name']}>Excluir</button>
-    //     </tr>
-    // )
 
     return (
         <div className="p-12">
@@ -86,6 +81,11 @@ const TableCharacters = () => {
                         return (
                             <>
                                 <tr>
+                                    <td className="border-b border-neutral-600 p-4 text-center">
+                                        <img src={item.image == "" ? 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' : item.image}
+                                            className="rounded-full"
+                                        />
+                                    </td>
                                     <td className="border-b border-neutral-600 p-4 text-center">{item.name}</td>
                                     <td className="border-b border-neutral-600 p-4 text-center">{item.weight}</td>
                                     <td className="border-b border-neutral-600 p-4 text-center">{item.height}</td>
@@ -98,7 +98,9 @@ const TableCharacters = () => {
                                     <td className="border-b border-neutral-600 p-4 text-center">{item.occupation}</td>
                                     <td className="border-b border-neutral-600 p-4 text-center">{item.similarity}%</td>
                                     <td className="border-b border-neutral-600 p-4 text-center buttonTable">
-                                        <Button icon="pi pi-pencil" className="p-button-rounded mr-2 p-button-warning" aria-label="Pencil" onClick={() => {}} />
+                                        <Link to={`/edit_character/${item.name}`}>
+                                            <Button icon="pi pi-pencil" className="p-button-rounded mr-2 p-button-warning" aria-label="Pencil" />
+                                        </Link>
                                         <Button icon="pi pi-trash" className="p-button-rounded mr-2 p-button-danger" aria-label="Trash" onClick={() => confirmDeleteCharacter(item.name)} />
                                     </td>
                                 </tr>

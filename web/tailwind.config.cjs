@@ -40,7 +40,7 @@ module.exports = {
           to: {
             strokeDashoffset: 1000,
           }
-        }
+        },
       },
     },
     animation: {
